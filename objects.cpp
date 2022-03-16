@@ -68,6 +68,7 @@ square::square(const square& v) : object(v) {
     length = v.length;
 }
 square::~square() {}
+
 square& square::operator = (const square& v) {
     length = v.length;
     
@@ -125,6 +126,7 @@ rectangle::rectangle(const rectangle& v) : object(v) {
     width = v.width;
 }
 rectangle::~rectangle() {}
+
 rectangle& rectangle::operator = (const rectangle& v) {
     height = v.height;
     width = v.width;
