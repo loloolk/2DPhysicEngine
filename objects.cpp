@@ -211,7 +211,7 @@ bool circle::collide(square& sqr) {
 
     return (cornerDistanceSq <= pow(this->radius, 2));
 }
-bool circle::collide(rectangle& rect) {
+bool circle::collide(rectangle& rect) { //Works
     mtn::Vector2 circleDist(abs(rect.position.x - this->position.x), abs(rect.position.y - this->position.y));
 
     if (circleDist.x > (rect.width / 2 + this->radius)) { return false;}
