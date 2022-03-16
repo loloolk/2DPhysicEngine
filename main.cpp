@@ -3,17 +3,17 @@
 
 
 int main() {
-    mtn::Vector2 def = mtn::Vector2(3.0, 0.0);
 
     //side length, position
-    circle s1(1, def);
+    rectangle s1(2, 2.5, mtn::Vector2(1.0, 0.0)); //1, 2
 
     //rad, position
-    rectangle s2(2, 4, mtn::Vector2(2.0, 0.0));
+    square s2(2, mtn::Vector2(-1.0, 0.0));
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();
 
+    std::cout << s1.collide(s2) << s2.collide(s1) << std::endl;
 
     for (int i = 0; i < 10; i++) {
         std::cout << "s1: (" << s1.position.x << ", " << s1.position.y << "), s2: (" << s2.position.x << ", " << s2.position.y << ")" << std::endl;
@@ -32,3 +32,5 @@ int main() {
 }
 
 //only switch momentum if same mass
+
+//FIX CORNERS

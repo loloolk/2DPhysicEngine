@@ -37,12 +37,7 @@ class square : public object {
     public:
         float length;
 
-        mtn::Vector2 corners[2][2] = {
-            {mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2), 
-                mtn::Vector2(this->position.x + length / 2, this->position.y + length / 2)},
-            {mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2),
-                mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2)}
-        };
+        mtn::Vector2 corners[2][2];
         mtn::Vector2 min = corners[1][0];
         mtn::Vector2 max = corners[0][1];
         
@@ -68,12 +63,7 @@ class rectangle : public object {
         float height;
         float width;
 
-        mtn::Vector2 corners[2][2] = {
-            {mtn::Vector2(this->position.x - width / 2, this->position.y + height / 2), 
-                mtn::Vector2(this->position.x + width / 2, this->position.y + height / 2)},
-            {mtn::Vector2(this->position.x - width / 2, this->position.y - height / 2),
-                mtn::Vector2(this->position.x + width / 2, this->position.y - height / 2)}
-        };
+        mtn::Vector2 corners[2][2];
         mtn::Vector2 min = corners[0][1];
         mtn::Vector2 max = corners[1][0];
 
@@ -97,14 +87,9 @@ class circle : public object {
     public:
         float radius;
 
-        mtn::Vector2 corners[2][2] = {
-            {mtn::Vector2(this->position.x + radius * cos(135), this->position.y + radius * sin(135)), 
-                mtn::Vector2(this->position.x + radius * cos(45), this->position.y + radius * sin(45))},
-            {mtn::Vector2(this->position.x + radius * cos(225), this->position.y + radius * sin(225)),
-                mtn::Vector2(this->position.x + radius * cos(315), this->position.y + radius * sin(315))}
-        };
-        mtn::Vector2 min = corners[0][1];
-        mtn::Vector2 max = corners[1][0];
+        mtn::Vector2 corners[2][2];
+        mtn::Vector2 min;
+        mtn::Vector2 max;
         
         circle();
         circle(float radius, mtn::Vector2 pos = mtn::Vector2(), mtn::Vector2 vel = mtn::Vector2(), mtn::Vector2 acc = mtn::Vector2(), mtn::Vector2 frc = mtn::Vector2(), float m = 1.0);
