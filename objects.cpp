@@ -3,6 +3,8 @@
 #include "objects.h"
 #include "mathEngine\Vector2.h"
 
+std::vector<object*> objects;
+
 object::object() {
     position = mtn::Vector2(0.0, 0.0);
     velocity = mtn::Vector2(0.0, 0.0);
@@ -57,15 +59,19 @@ object& object::operator = (const object& obj) {
 
 square::square() : object() {
     length = 1;
+    objects.push_back(this);
 }
 square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     length = l;
+    objects.push_back(this);
 }
 square::square(float l, object& obj) : object(obj) {
     length = l;
+    objects.push_back(this);
 }
 square::square(const square& v) : object(v) {
     length = v.length;
+    objects.push_back(this);
 }
 square::~square() {}
 
@@ -112,18 +118,22 @@ bool square::collide(circle& cir) {
 rectangle::rectangle() : object() {
     height = 2.0;
     width = 4.0;
+    objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     height = h;
     width = w;
+    objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, object& obj) : object(obj) {
     height = h;
     width = w;
+    objects.push_back(this);
 }
 rectangle::rectangle(const rectangle& v) : object(v) {
     height = v.height;
     width = v.width;
+    objects.push_back(this);
 }
 rectangle::~rectangle() {}
 
@@ -170,15 +180,19 @@ bool rectangle::collide(circle& cir) {
 
 circle::circle() : object() {
     radius = 1;
+    objects.push_back(this);
 }
 circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     radius = r;
+    objects.push_back(this);
 }
 circle::circle(float r, object& obj) : object(obj) {
     radius = r;
+    objects.push_back(this);
 }
 circle::circle(const circle& v) : object(v) {
     radius = v.radius;
+    objects.push_back(this);
 }
 circle::~circle() {}
 
@@ -229,3 +243,9 @@ bool circle::collide(rectangle& rect) { //Works
 //line detecting where they go for skipover problem
 
 //possibly take in length from shape to fix collisions
+
+void update() {
+    for (int i = 0; i < objects.size(); i++) {
+        objects[i]->update();
+    }
+}

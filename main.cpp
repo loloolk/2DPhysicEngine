@@ -17,8 +17,7 @@ int main() {
 
     for (int i = 0; i < 10; i++) {
         std::cout << "s1: (" << s1.position.x << ", " << s1.position.y << "), s2: (" << s2.position.x << ", " << s2.position.y << ")" << std::endl;
-        s1.update();
-        s2.update();
+        update();
         if (s1.collide(s2)) {
             std::cout << "collision" << std::endl;
             //accurate collision
@@ -31,3 +30,5 @@ int main() {
         }
     }
 }
+
+//only switch momentum if same mass
