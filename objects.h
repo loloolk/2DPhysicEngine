@@ -65,8 +65,8 @@ class square : public object {
 
 class rectangle : public object {
     public:
-        float height = 1.0;
-        float width = 2.0;
+        float height;
+        float width;
 
         mtn::Vector2 corners[2][2] = {
             {mtn::Vector2(this->position.x - width / 2, this->position.y + height / 2), 

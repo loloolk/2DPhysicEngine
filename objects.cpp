@@ -110,8 +110,8 @@ bool square::collide(circle& cir) {
 /*###############################################################################*/
 
 rectangle::rectangle() : object() {
-    height = 1.0;
-    width = 2.0;
+    height = 2.0;
+    width = 4.0;
 }
 rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     height = h;
@@ -194,7 +194,7 @@ bool circle::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
-bool circle::collide(circle& circ) {
+bool circle::collide(circle& circ) { // Works
     //return ((xa-xc)*(xa-xc) + (ya-yc)*(ya-yc)) < r*r;
     return ((this->position.x - circ.position.x)*(this->position.x - circ.position.x) + (this->position.y - circ.position.y)*(this->position.y - circ.position.y)) < (this->radius + circ.radius)*(this->radius + circ.radius);
 }
@@ -211,7 +211,19 @@ bool circle::collide(square& sqr) {
 
     return (cornerDistanceSq <= pow(this->radius, 2));
 }
+bool circle::collide(rectangle& rect) {
+    mtn::Vector2 circleDist(abs(rect.position.x - this->position.x), abs(rect.position.y - this->position.y));
 
+    if (circleDist.x > (rect.width / 2 + this->radius)) { return false;}
+    if (circleDist.y > (rect.height / 2 + this->radius)) { return false;}
+
+    if (circleDist.x <= (rect.width / 2)) { return true;}
+    if (circleDist.y <= (rect.height / 2)) { return true;}
+
+    float cornerDistanceSq = pow((float)(circleDist.x - rect.width / 2), 2) + pow((float)(circleDist.y - rect.height / 2), 2);
+
+    return (cornerDistanceSq <= pow(this->radius, 2));
+}
 
 
 //line detecting where they go for skipover problem

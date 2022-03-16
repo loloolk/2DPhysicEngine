@@ -3,13 +3,13 @@
 
 
 int main() {
-    mtn::Vector2 def = mtn::Vector2(0.0, 5.0);
+    mtn::Vector2 def = mtn::Vector2(-1.0, 0.0);
 
     //side length, position
-    circle s1(5.05, def);
+    circle s1(1, def);
 
     //rad, position
-    circle s2(5, mtn::Vector2(0.0, -5.0));
+    rectangle s2(2, 4, mtn::Vector2(2.0, 0.0));
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();
