@@ -8,12 +8,11 @@ int main() {
     //side length, position
     square s1(100.0, def);
 
-    //height, width-, position
+    //rad, position
     circle s2(1.0, mtn::Vector2(0.0, 5.0));
-    //circle s2(1.0, def);
 
-    //s1.velocity = mtn::Vector2(-1.0, -1.0);
-    //s2.velocity = mtn::Vector2(2.0, 0.0);
+    //s1.velocity = mtn::Vector2();
+    //s2.velocity = mtn::Vector2();
 
     for (int i = 0; i < 10; i++) {
         std::cout << "s1: (" << s1.position.x << ", " << s1.position.y << "), s2: (" << s2.position.x << ", " << s2.position.y << ")" << std::endl;
@@ -31,5 +30,3 @@ int main() {
         }
     }
 }
-
-
