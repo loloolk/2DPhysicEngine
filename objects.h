@@ -35,7 +35,7 @@ class object {
 
 class square : public object {
     public:
-        float length = 1.0;
+        float length;
 
         mtn::Vector2 corners[2][2] = {
             {mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2), 
