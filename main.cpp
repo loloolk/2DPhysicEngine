@@ -3,7 +3,7 @@
 
 
 int main() {
-    mtn::Vector2 def = mtn::Vector2(-1.0, 0.0);
+    mtn::Vector2 def = mtn::Vector2(3.0, 0.0);
 
     //side length, position
     circle s1(1, def);
