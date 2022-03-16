@@ -65,8 +65,8 @@ square::square() : object() {
     corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
     corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
 
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -77,8 +77,8 @@ square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mt
     corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
     corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
 
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 square::square(float l, object& obj) : object(obj) {
@@ -89,8 +89,8 @@ square::square(float l, object& obj) : object(obj) {
     corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
     corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
 
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 square::square(const square& v) : object(v) {
@@ -101,8 +101,8 @@ square::square(const square& v) : object(v) {
     corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
     corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
 
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 square::~square() {}
@@ -113,8 +113,10 @@ square& square::operator = (const square& v) {
     return * this;
 }
 bool square::isOnPoint(mtn::Vector2 point) {
-    if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
-        return true;
+    if (point.x >= this->min.x && point.x <= this->max.x) {
+        if (point.y >= this->min.y && point.y <= this->max.y) {
+            return true;
+        }
     }
     return false;
 }
@@ -125,7 +127,7 @@ bool square::collide(square& sqr) {
     }
     return false;
 }
-bool square::collide(rectangle& rect) {
+bool square::collide(rectangle& rect) { //Works (?)
     if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
         return true;
     }
@@ -156,8 +158,8 @@ rectangle::rectangle() : object() {
     corners[1][0] = mtn::Vector2(this->position.x - width / 2, this->position.y - height / 2);
     corners[1][1] = mtn::Vector2(this->position.x + width / 2, this->position.y - height / 2);
 
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -169,8 +171,8 @@ rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::
     corners[1][0] = mtn::Vector2(this->position.x - width / 2, this->position.y - height / 2);
     corners[1][1] = mtn::Vector2(this->position.x + width / 2, this->position.y - height / 2);
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, object& obj) : object(obj) {
@@ -182,8 +184,8 @@ rectangle::rectangle(float h, float w, object& obj) : object(obj) {
     corners[1][0] = mtn::Vector2(this->position.x - width / 2, this->position.y - height / 2);
     corners[1][1] = mtn::Vector2(this->position.x + width / 2, this->position.y - height / 2);
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 rectangle::rectangle(const rectangle& v) : object(v) {
@@ -195,8 +197,8 @@ rectangle::rectangle(const rectangle& v) : object(v) {
     corners[1][0] = mtn::Vector2(this->position.x - width / 2, this->position.y - height / 2);
     corners[1][1] = mtn::Vector2(this->position.x + width / 2, this->position.y - height / 2);
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 rectangle::~rectangle() {}
@@ -214,13 +216,13 @@ bool rectangle::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
-bool rectangle::collide(rectangle& rect) {
+bool rectangle::collide(rectangle& rect) { //Works
     if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
         return true;
     }
     return false;
 }
-bool rectangle::collide(square& sqr) {
+bool rectangle::collide(square& sqr) { //Works (?)
     if (this->isOnPoint(sqr.corners[0][0]) || this->isOnPoint(sqr.corners[0][1]) || this->isOnPoint(sqr.corners[1][0]) || this->isOnPoint(sqr.corners[1][1])) {
         return true;
     }
@@ -250,8 +252,8 @@ circle::circle() : object() {
     corners[1][0] = mtn::Vector2(this->position.x + radius * cos(225), this->position.y + radius * sin(225));
     corners[1][1] = mtn::Vector2(this->position.x + radius * cos(315), this->position.y + radius * sin(315));
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -262,8 +264,8 @@ circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mt
     corners[1][0] = mtn::Vector2(this->position.x + radius * cos(225), this->position.y + radius * sin(225));
     corners[1][1] = mtn::Vector2(this->position.x + radius * cos(315), this->position.y + radius * sin(315));
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 circle::circle(float r, object& obj) : object(obj) {
@@ -274,8 +276,8 @@ circle::circle(float r, object& obj) : object(obj) {
     corners[1][0] = mtn::Vector2(this->position.x + radius * cos(225), this->position.y + radius * sin(225));
     corners[1][1] = mtn::Vector2(this->position.x + radius * cos(315), this->position.y + radius * sin(315));
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 circle::circle(const circle& v) : object(v) {
@@ -286,8 +288,8 @@ circle::circle(const circle& v) : object(v) {
     corners[1][0] = mtn::Vector2(this->position.x + radius * cos(225), this->position.y + radius * sin(225));
     corners[1][1] = mtn::Vector2(this->position.x + radius * cos(315), this->position.y + radius * sin(315));
     
-    min = corners[0][1];
-    max = corners[1][0];
+    max = corners[0][1];
+    min = corners[1][0];
     objects.push_back(this);
 }
 circle::~circle() {}
@@ -344,4 +346,5 @@ void update() {
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->update();
     }
+    
 }
