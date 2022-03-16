@@ -38,41 +38,34 @@ void object::changeVelocity(mtn::Vector2 vel) {
 void object::changeAcceleration(mtn::Vector2 acc) {
     acceleration = acc;
 }
-/*void object::applyForce(mtn::Vector2 force) {
-    this->force += force;
-}*/
 
 void object::update() {
     velocity += acceleration;
     position += velocity;
 }
-object& object::operator = (const object& obj) {
+object& object::operator = (const object& obj) {    
     position = obj.position;
     velocity = obj.velocity;
     acceleration = obj.acceleration;
-    //force = obj.force;
     
     mass = obj.mass;
     
     return * this;
 }
 
+/*###############################################################################*/
 
 square::square() : object() {
     length = 1;
-    this->size = length;
 }
 square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     length = l;
-    this->size = length;
 }
 square::square(float l, object& obj) : object(obj) {
     length = l;
-    this->size = length;
 }
 square::square(const square& v) : object(v) {
     length = v.length;
-    this->size = length;
 }
 square::~square() {}
 square& square::operator = (const square& v) {
@@ -87,37 +80,54 @@ bool square::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
+bool square::collide(square& sqr) {
+    if (this->isOnPoint(corners[0][0]) || this->isOnPoint(corners[0][1]) || this->isOnPoint(corners[1][0]) || this->isOnPoint(corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool square::collide(rectangle& rect) {
+    if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool square::collide(circle& cir) {
+    mtn::Vector2 circleDist(abs(cir.position.x - this->position.x), abs(cir.position.y - this->position.y));
+
+    if (circleDist.x > (this->length / 2 + cir.radius)) { return false;}
+    if (circleDist.y > (this->length / 2 + cir.radius)) { return false;}
+
+    if (circleDist.x <= (this->length / 2)) { return true;}
+    if (circleDist.y <= (this->length / 2)) { return true;}
+
+    float cornerDistanceSq = pow((float)(circleDist.x - this->length / 2), 2) + pow((float)(circleDist.y - this->length / 2), 2);
+
+    return (cornerDistanceSq <= pow(cir.radius, 2));
+}
+
+/*###############################################################################*/
 
 rectangle::rectangle() : object() {
     height = 1.0;
     width = 2.0;
-    this->size = height;
-    this->rW = width;
 }
 rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     height = h;
     width = w;
-    this->size = height;
-    this->rW = width;
 }
 rectangle::rectangle(float h, float w, object& obj) : object(obj) {
     height = h;
     width = w;
-    this->size = height;
-    this->rW = width;
 }
 rectangle::rectangle(const rectangle& v) : object(v) {
     height = v.height;
     width = v.width;
-    this->size = height;
-    this->rW = width;
 }
 rectangle::~rectangle() {}
 rectangle& rectangle::operator = (const rectangle& v) {
     height = v.height;
     width = v.width;
-    this->size = height;
-    this->rW = width;
     
     return * this;
 }
@@ -128,27 +138,23 @@ bool rectangle::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
+/*###############################################################################*/
 
 circle::circle() : object() {
     radius = 1;
-    this->size = radius;
 }
 circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
     radius = 1;
-    this->size = radius;
 }
 circle::circle(float r, object& obj) : object(obj) {
     radius = r;
-    this->size = radius;
 }
 circle::circle(const circle& v) : object(v) {
     radius = v.radius;
-    this->size = radius;
 }
 circle::~circle() {}
 circle& circle::operator = (const circle& v) {
     radius = v.radius;
-    this->size = radius;
     
     return * this;
 }
