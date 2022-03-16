@@ -140,13 +140,39 @@ bool rectangle::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
+bool rectangle::collide(rectangle& rect) {
+    if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool rectangle::collide(square& sqr) {
+    if (this->isOnPoint(sqr.corners[0][0]) || this->isOnPoint(sqr.corners[0][1]) || this->isOnPoint(sqr.corners[1][0]) || this->isOnPoint(sqr.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool rectangle::collide(circle& cir) {
+    mtn::Vector2 circleDist(abs(cir.position.x - this->position.x), abs(cir.position.y - this->position.y));
+
+    if (circleDist.x > (this->width / 2 + cir.radius)) { return false;}
+    if (circleDist.y > (this->height / 2 + cir.radius)) { return false;}
+
+    if (circleDist.x <= (this->width / 2)) { return true;}
+    if (circleDist.y <= (this->height / 2)) { return true;}
+
+    float cornerDistanceSq = pow((float)(circleDist.x - this->width / 2), 2) + pow((float)(circleDist.y - this->height / 2), 2);
+
+    return (cornerDistanceSq <= pow(cir.radius, 2));
+}
+
 /*###############################################################################*/
 
 circle::circle() : object() {
     radius = 1;
 }
 circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
-    radius = 1;
+    radius = r;
 }
 circle::circle(float r, object& obj) : object(obj) {
     radius = r;
@@ -155,6 +181,7 @@ circle::circle(const circle& v) : object(v) {
     radius = v.radius;
 }
 circle::~circle() {}
+
 circle& circle::operator = (const circle& v) {
     radius = v.radius;
     
@@ -167,61 +194,25 @@ bool circle::isOnPoint(mtn::Vector2 point) {
     return false;
 }
 
+bool circle::collide(circle& circ) {
+    //return ((xa-xc)*(xa-xc) + (ya-yc)*(ya-yc)) < r*r;
+    return ((this->position.x - circ.position.x)*(this->position.x - circ.position.x) + (this->position.y - circ.position.y)*(this->position.y - circ.position.y)) < (this->radius + circ.radius)*(this->radius + circ.radius);
+}
+bool circle::collide(square& sqr) {
+    mtn::Vector2 circleDist(abs(sqr.position.x - this->position.x), abs(sqr.position.y - this->position.y));
 
-bool collide(square s1, square s2) {
-    float distance = sqrt(pow(s1.position.x - s2.position.x, 2) + pow(s1.position.y - s2.position.y, 2));
-    if (distance < s1.length + s2.length) {
-        return true;
-    }
-    return false;
-}
-bool collide(square s, rectangle r) {
-    float distance = sqrt(pow(s.position.x - r.position.x, 2) + pow(s.position.y - r.position.y, 2));
-    if (distance < s.length + r.height) {
-        return true;
-    }
-    return false;
-}
-bool collide(square s, circle c) {
-    float distance = sqrt(pow(s.position.x - c.position.x, 2) + pow(s.position.y - c.position.y, 2));
-    if (distance < s.length + c.radius) {
-        return true;
-    }
-    return false;
-}
+    if (circleDist.x > (sqr.length / 2 + this->radius)) { return false;}
+    if (circleDist.y > (sqr.length / 2 + this->radius)) { return false;}
 
-bool collide(rectangle r1, rectangle r2) {
-    float distance = sqrt(pow(r1.position.x - r2.position.x, 2) + pow(r1.position.y - r2.position.y, 2));
-    if (distance < r1.height + r2.height) {
-        return true;
-    }
-    return false;
-}
-bool collide(rectangle r, circle c) {
-    float distance = sqrt(pow(r.position.x - c.position.x, 2) + pow(r.position.y - c.position.y, 2));
-    if (distance < r.height + c.radius) {
-        return true;
-    }
-    return false;
-}
+    if (circleDist.x <= (sqr.length / 2)) { return true;}
+    if (circleDist.y <= (sqr.length / 2)) { return true;}
 
-bool collide(circle c1, circle c2) {
-    float distance = sqrt(pow(c1.position.x - c2.position.x, 2) + pow(c1.position.y - c2.position.y, 2));
-    if (distance < c1.radius + c2.radius) {
-        return true;
-    }
-    return false;
+    float cornerDistanceSq = pow((float)(circleDist.x - sqr.length / 2), 2) + pow((float)(circleDist.y - sqr.length / 2), 2);
+
+    return (cornerDistanceSq <= pow(this->radius, 2));
 }
 
 
-/*bool seperatingAxisTheorem(object& obj1, object& obj2) { //this function detects all collisions between any two objects
-    if (obj1.position.x + obj1.size > obj2.position.x - obj2.size && obj1.position.x - obj1.size < obj2.position.x + obj2.size) {
-        if (obj1.position.y + obj1.size > obj2.position.y - obj2.size && obj1.position.y - obj1.size < obj2.position.y + obj2.size) {
-            return true;
-        }
-    }
-    return false;
-}*/
 
 //line detecting where they go for skipover problem
 
