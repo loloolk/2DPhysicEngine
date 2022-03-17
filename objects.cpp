@@ -415,11 +415,9 @@ mtn::Vector2 findClosestObject(mtn::Vector2& v) {
 bool checkCollisions(object& obj);
 
 void update() {
-    /*for (int i = 0; i < hitboxes.size(); i++) {
-        if (hitboxes[i]->collide(hitboxes[i + 1])) {
-
-        }
-    }*/
+    for (int i = 0; i < objects.size(); i++) {
+        std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
+    }
     for (int i = 0; i < objects.size(); i++) {
         if (checkCollisions(*objects[i])) {
             std::cout << "Collision!" << std::endl;

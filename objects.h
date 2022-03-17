@@ -40,6 +40,8 @@ class object {
         void update();
 
         bool isOnPoint(mtn::Vector2 point);
+
+        //mtn::Vector2 collided(object& obj);
 };
 
 class square : public object {
