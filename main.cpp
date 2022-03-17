@@ -5,10 +5,10 @@
 int main() {
 
     //side length, position
-    rectangle s1(1, 1, mtn::Vector2(1.0, 0.0)); //1, 2
+    rectangle s1(2, 2, mtn::Vector2(1.0, 0.0)); //1, 2
 
     //rad, position
-    rectangle s2(10, 10, mtn::Vector2(1, 0.0)); //1, 2
+    rectangle s2(2, 2, mtn::Vector2(3.1, 0.0)); //1, 2
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();

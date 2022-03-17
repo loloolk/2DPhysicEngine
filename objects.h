@@ -13,6 +13,10 @@ class object {
         mtn::Vector2 position;
         mtn::Vector2 velocity;
         mtn::Vector2 acceleration;
+
+        mtn::Vector2 corners[2][2];
+        mtn::Vector2 min = corners[1][0];
+        mtn::Vector2 max = corners[0][1];
         
         float mass;
         float theta = RadToDegrees(atan2(position.y, position.x));
@@ -29,18 +33,16 @@ class object {
         void changeAcceleration(mtn::Vector2 acc);
         void applyForce(mtn::Vector2 force);
 
+        object& operator = (const object& v);
+
         void update();
 
-        object& operator = (const object& v);
+        bool isOnPoint(mtn::Vector2 point);
 };
 
 class square : public object {
     public:
         float length;
-
-        mtn::Vector2 corners[2][2];
-        mtn::Vector2 min = corners[1][0];
-        mtn::Vector2 max = corners[0][1];
 
         //hitbox hb;
         
@@ -49,8 +51,6 @@ class square : public object {
         square(float l, object& obj);
         square(const square& v);
         ~square();
-        
-        bool isOnPoint(mtn::Vector2 point);
         
         square& operator = (const square& v);
 
@@ -66,10 +66,6 @@ class rectangle : public object {
         float height;
         float width;
 
-        mtn::Vector2 corners[2][2];
-        mtn::Vector2 min = corners[0][1];
-        mtn::Vector2 max = corners[1][0];
-
         //hitbox hb;
 
         rectangle();
@@ -77,8 +73,6 @@ class rectangle : public object {
         rectangle(float h, float w, object& obj);
         rectangle(const rectangle& v);
         ~rectangle();
-        
-        bool isOnPoint(mtn::Vector2 point);
 
         rectangle& operator = (const rectangle& v);
 
@@ -92,10 +86,6 @@ class circle : public object {
     public:
         float radius;
 
-        mtn::Vector2 corners[2][2];
-        mtn::Vector2 min;
-        mtn::Vector2 max;
-
         //hitbox hb;
         
         circle();
@@ -103,8 +93,6 @@ class circle : public object {
         circle(float radius, object& obj);
         circle(const circle& v);
         ~circle();
-        
-        bool isOnPoint(mtn::Vector2 point);
 
         circle& operator = (const circle& v);
 
@@ -114,6 +102,14 @@ class circle : public object {
 
         //void update();
 };
+
+
+
+
+
+
+
+
 
 class hitbox : public object {
     public:

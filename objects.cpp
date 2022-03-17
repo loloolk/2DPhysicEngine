@@ -46,6 +46,7 @@ void object::update() {
     velocity += acceleration;
     position += velocity;
 }
+
 object& object::operator = (const object& obj) {    
     position = obj.position;
     velocity = obj.velocity;
@@ -54,6 +55,12 @@ object& object::operator = (const object& obj) {
     mass = obj.mass;
     
     return * this;
+}
+bool object::isOnPoint(mtn::Vector2 point) {
+    if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
+        return true;
+    }
+    return false;
 }
 
 /*###############################################################################*/
@@ -115,14 +122,6 @@ square& square::operator = (const square& v) {
     length = v.length;
     
     return * this;
-}
-bool square::isOnPoint(mtn::Vector2 point) {
-    if (point.x >= this->min.x && point.x <= this->max.x) {
-        if (point.y >= this->min.y && point.y <= this->max.y) {
-            return true;
-        }
-    }
-    return false;
 }
 
 bool square::collide(square& sqr) {
@@ -213,12 +212,6 @@ rectangle& rectangle::operator = (const rectangle& v) {
     
     return * this;
 }
-bool rectangle::isOnPoint(mtn::Vector2 point) {
-    if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
-        return true;
-    }
-    return false;
-}
 
 bool rectangle::collide(rectangle& rect) { //Works
     if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
@@ -302,12 +295,6 @@ circle& circle::operator = (const circle& v) {
     radius = v.radius;
     
     return * this;
-}
-bool circle::isOnPoint(mtn::Vector2 point) {
-    if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
-        return true;
-    }
-    return false;
 }
 
 bool circle::collide(circle& circ) { // Works
@@ -404,6 +391,24 @@ bool hitbox::collide(hitbox& hit) {
 
 //line detecting where they go for skipover problem
 //possibly take in length from shape to fix collisions
+
+/*mtn::Vector2 findClosestObject(mtn::Vector2& v) {
+    mtn::Vector2 closest;
+    float closestDist = 999999999;
+    for (int i = 0; i < objects.size(); i++) {
+        if (objects[i]->isOnPoint(v)) {
+            return objects[i]->position;
+        }
+        else {
+            float dist = sqrt(pow(objects[i]->position.x - v.x, 2) + pow(objects[i]->position.y - v.y, 2));
+            if (dist < closestDist) {
+                closestDist = dist;
+                closest = objects[i]->position;
+            }
+        }
+    }
+    return closest;
+}*/
 
 void update() {
     /*for (int i = 0; i < hitboxes.size(); i++) {
