@@ -412,6 +412,8 @@ mtn::Vector2 findClosestObject(mtn::Vector2& v) {
     return closest;
 }
 
+bool checkCollisions(object& obj);
+
 void update() {
     /*for (int i = 0; i < hitboxes.size(); i++) {
         if (hitboxes[i]->collide(hitboxes[i + 1])) {
@@ -419,12 +421,19 @@ void update() {
         }
     }*/
     for (int i = 0; i < objects.size(); i++) {
+        if (checkCollisions(*objects[i])) {
+            std::cout << "Collision!" << std::endl;
+        }
         objects[i]->update();
     }
 }
 
-void checkCollisions() {
+bool checkCollisions(object& obj) {
+    mtn::Vector2 closest = findClosestObject(obj.position);
     for (int i = 0; i < objects.size(); i++) {
-        break;
+        if (objects[i]->position == closest) {
+            return true;
+        }
     }
+    return false;
 }
