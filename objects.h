@@ -35,7 +35,6 @@ class object {
         void applyForce(mtn::Vector2 force);
 
         object& operator = (const object& v);
-        friend std::ostream& operator <<(std::ostream& os, const mtn::Vector2& v);
 
         void update();
 

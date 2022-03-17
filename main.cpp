@@ -4,15 +4,14 @@
 
 
 int main() {
+    //side length, position
+    square s3(2, mtn::Vector2(-1.0, 0.0));
 
     //side length, position
     rectangle s1(2, 2, mtn::Vector2(1.0, 0.0)); //1, 2
 
     //rad, position
     circle s2(1, mtn::Vector2(3.0, 0.0)); //1, 2
-
-    //side length, position
-    square s3(2, mtn::Vector2(-1.0, 0.0));
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();
