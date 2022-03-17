@@ -107,31 +107,3 @@ class circle : public object {
         //void update();
 };
 
-
-
-
-
-
-
-
-
-class hitbox : public object {
-    public:
-        float length;
-
-        mtn::Vector2 corners[2][2];
-        mtn::Vector2 min;
-        mtn::Vector2 max;
-
-        hitbox(float l, mtn::Vector2 pos = mtn::Vector2(), mtn::Vector2 vel = mtn::Vector2(), mtn::Vector2 acc = mtn::Vector2(), mtn::Vector2 frc = mtn::Vector2(), float m = 1.0);
-        hitbox(float l, object& obj);
-        hitbox(const hitbox& v);
-        ~hitbox();
-        
-        bool isOnPoint(mtn::Vector2 point);
-
-        hitbox& operator = (const hitbox& v);
-
-        bool collide(hitbox& hit);
-        //void update();
-};
