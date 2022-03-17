@@ -4,6 +4,7 @@
 #include "mathEngine\Vector2.h"
 
 std::vector<object*> objects;
+std::vector<hitbox*> hitboxes;
 
 object::object() {
     position = mtn::Vector2(0.0, 0.0);
@@ -67,6 +68,9 @@ square::square() : object() {
 
     max = corners[0][1];
     min = corners[1][0];
+
+    //hb = hitbox((float)(length / 100.0) * 105.0, *this);
+
     objects.push_back(this);
 }
 square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -337,14 +341,78 @@ bool circle::collide(rectangle& rect) { //Works
     return (cornerDistanceSq <= pow(this->radius, 2));
 }
 
+/*###############################################################################*/
+/*
+hitbox::hitbox(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
+    length = l;
+
+    corners[0][0] = mtn::Vector2(this->position.x + length / 2, this->position.y + length / 2);
+    corners[0][1] = mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2);
+    corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
+    corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
+
+    max = corners[0][1];
+    min = corners[1][0];
+    hitboxes.push_back(this);
+}
+hitbox::hitbox(float l, object& obj) : object(obj) {
+    length = l;
+    
+    corners[0][0] = mtn::Vector2(this->position.x + length / 2, this->position.y + length / 2);
+    corners[0][1] = mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2);
+    corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
+    corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
+
+    max = corners[0][1];
+    min = corners[1][0];
+    hitboxes.push_back(this);
+}
+hitbox::hitbox(const hitbox& v) : object(v) {
+    length = v.length;
+    
+    corners[0][0] = mtn::Vector2(this->position.x + length / 2, this->position.y + length / 2);
+    corners[0][1] = mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2);
+    corners[1][0] = mtn::Vector2(this->position.x - length / 2, this->position.y - length / 2);
+    corners[1][1] = mtn::Vector2(this->position.x + length / 2, this->position.y - length / 2);
+
+    max = corners[0][1];
+    min = corners[1][0];
+    hitboxes.push_back(this);
+}
+hitbox::~hitbox() {}
+
+hitbox& hitbox::operator = (const hitbox& v) {
+    length = v.length;
+    
+    return * this;
+}
+bool hitbox::isOnPoint(mtn::Vector2 point) {
+    if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
+        return true;
+    }
+    return false;
+}
+
+bool hitbox::collide(hitbox& hit) {
+    if (this->isOnPoint(corners[0][0]) || this->isOnPoint(corners[0][1]) || this->isOnPoint(corners[1][0]) || this->isOnPoint(corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+*/
+/*###############################################################################*/
 
 //line detecting where they go for skipover problem
-
 //possibly take in length from shape to fix collisions
 
 void update() {
+    /*for (int i = 0; i < hitboxes.size(); i++) {
+        if (hitboxes[i]->collide(hitboxes[i + 1])) {
+
+        }
+    }*/
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->update();
     }
-    
+
 }
