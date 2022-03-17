@@ -1,7 +1,4 @@
-#include <math.h>
-#include <vector>
 #include "objects.h"
-#include "mathEngine\Vector2.h"
 
 std::vector<object*> objects;
 std::vector<hitbox*> hitboxes;
