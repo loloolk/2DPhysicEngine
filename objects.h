@@ -1,4 +1,5 @@
 #include "mathEngine\Vector2.cpp"
+#include <iostream>
 #include <vector>
 #include <math.h>
 
@@ -34,6 +35,7 @@ class object {
         void applyForce(mtn::Vector2 force);
 
         object& operator = (const object& v);
+        friend std::ostream& operator <<(std::ostream& os, const mtn::Vector2& v);
 
         void update();
 

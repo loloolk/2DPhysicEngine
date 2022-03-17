@@ -43,6 +43,7 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "vector": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "string": "cpp"
     }
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "objects.cpp"
 
 
@@ -13,8 +14,10 @@ int main() {
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();
 
+    std::cout << findClosestObject(s1.position) << std::endl;
+
     for (int i = 0; i < 10; i++) {
-        std::cout << "s1: (" << s1.position.x << ", " << s1.position.y << "), s2: (" << s2.position.x << ", " << s2.position.y << ")" << std::endl;
+        std::cout << "s1: " << s1.position << ", s2: " << s2.position << std::endl;
         update();
         if (s1.collide(s2) || s2.collide(s1)) {
             std::cout << "collision" << std::endl;

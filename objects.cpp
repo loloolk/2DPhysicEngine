@@ -42,11 +42,6 @@ void object::changeAcceleration(mtn::Vector2 acc) {
     acceleration = acc;
 }
 
-void object::update() {
-    velocity += acceleration;
-    position += velocity;
-}
-
 object& object::operator = (const object& obj) {    
     position = obj.position;
     velocity = obj.velocity;
@@ -56,6 +51,16 @@ object& object::operator = (const object& obj) {
     
     return * this;
 }
+std::ostream& operator <<(std::ostream& os, const mtn::Vector2& v) {
+    os << "(" << v.x << ", " << v.y << ")";
+    return os;
+}
+
+void object::update() {
+    velocity += acceleration;
+    position += velocity;
+}
+
 bool object::isOnPoint(mtn::Vector2 point) {
     if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
         return true;
@@ -102,6 +107,7 @@ square::square(float l, object& obj) : object(obj) {
 
     max = corners[0][1];
     min = corners[1][0];
+
     objects.push_back(this);
 }
 square::square(const square& v) : object(v) {
@@ -392,23 +398,19 @@ bool hitbox::collide(hitbox& hit) {
 //line detecting where they go for skipover problem
 //possibly take in length from shape to fix collisions
 
-/*mtn::Vector2 findClosestObject(mtn::Vector2& v) {
+mtn::Vector2 findClosestObject(mtn::Vector2& v) {
     mtn::Vector2 closest;
     float closestDist = 999999999;
     for (int i = 0; i < objects.size(); i++) {
-        if (objects[i]->isOnPoint(v)) {
-            return objects[i]->position;
-        }
-        else {
-            float dist = sqrt(pow(objects[i]->position.x - v.x, 2) + pow(objects[i]->position.y - v.y, 2));
-            if (dist < closestDist) {
-                closestDist = dist;
-                closest = objects[i]->position;
-            }
+        float dist = sqrt(pow(objects[i]->position.x - v.x, 2) + pow(objects[i]->position.y - v.y, 2));
+        if (dist < closestDist && dist != 0) {
+            closestDist = dist;
+            closest = objects[i]->position;
         }
     }
+
     return closest;
-}*/
+}
 
 void update() {
     /*for (int i = 0; i < hitboxes.size(); i++) {
@@ -419,5 +421,10 @@ void update() {
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->update();
     }
+}
 
+void checkCollisions() {
+    for (int i = 0; i < objects.size(); i++) {
+        break;
+    }
 }
