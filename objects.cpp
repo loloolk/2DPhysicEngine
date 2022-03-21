@@ -498,20 +498,27 @@ bool checkCollisions(object& obj) {
 
 void update() {
     
+    //Start: Print out all object's locations
     auto begin1 = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < objects.size(); i++) {
         std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
     }
     auto end1 = std::chrono::high_resolution_clock::now();
     std::cout << "first section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
+    //End: Print out all object's locations
     
+    //Start: Check for collisions
     auto begin2 = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < objects.size(); i++) {
-        if (checkCollisions(*objects[i])) {
-            std::cout << "Collision with " << objects[i]->position << " and " << findClosestObject(objects[i]->position) << std::endl;
-        }
         objects[i]->update();
+
+        if (checkCollisions(*objects[i])) {
+            //Start: Collision Logic
+            std::cout << "Collision with " << objects[i]->position << " and " << findClosestObject(objects[i]->position) << std::endl;
+            //End: Collision Logic
+        }
     }
     auto end2 = std::chrono::high_resolution_clock::now();
     std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
+    //End: Check for collisions
 }
