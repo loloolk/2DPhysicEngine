@@ -503,7 +503,7 @@ void update() {
         std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
     }
     auto end1 = std::chrono::high_resolution_clock::now();
-    //std::cout << "first section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
+    std::cout << "first section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
     
     auto begin2 = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < objects.size(); i++) {
@@ -513,5 +513,5 @@ void update() {
         objects[i]->update();
     }
     auto end2 = std::chrono::high_resolution_clock::now();
-    //std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
+    std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
 }
