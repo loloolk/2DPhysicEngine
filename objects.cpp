@@ -1,7 +1,10 @@
 #include "objects.h"
+#include <chrono>
+#include <typeinfo>
 
 std::vector<object*> objects;
 std::vector<hitbox*> hitboxes;
+std::vector<std::vector<mtn::Vector2>> collidingPairs;
 
 object::object() {
     position = mtn::Vector2(0.0, 0.0);
@@ -48,15 +51,15 @@ object& object::operator = (const object& obj) {
     
     return * this;
 }
-std::ostream& operator <<(std::ostream& os, const mtn::Vector2& v) {
-    os << "(" << v.x << ", " << v.y << ")";
-    return os;
+bool object::operator == (const object& obj) {
+    return (position == obj.position && velocity == obj.velocity && acceleration == obj.acceleration && mass == obj.mass);
 }
 
 void object::update() {
     velocity += acceleration;
     position += velocity;
 }
+
 
 bool object::isOnPoint(mtn::Vector2 point) {
     if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
@@ -78,7 +81,12 @@ square::square() : object() {
     max = corners[0][1];
     min = corners[1][0];
 
-    //hb = hitbox((float)(length / 100.0) * 105.0, *this);
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+
+    type = "square";
 
     objects.push_back(this);
 }
@@ -92,6 +100,14 @@ square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mt
 
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "square";
+
     objects.push_back(this);
 }
 square::square(float l, object& obj) : object(obj) {
@@ -104,6 +120,13 @@ square::square(float l, object& obj) : object(obj) {
 
     max = corners[0][1];
     min = corners[1][0];
+    
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "square";
 
     objects.push_back(this);
 }
@@ -117,6 +140,14 @@ square::square(const square& v) : object(v) {
 
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "square";
+
     objects.push_back(this);
 }
 square::~square() {}
@@ -125,32 +156,6 @@ square& square::operator = (const square& v) {
     length = v.length;
     
     return * this;
-}
-
-bool square::collide(square& sqr) {
-    if (this->isOnPoint(corners[0][0]) || this->isOnPoint(corners[0][1]) || this->isOnPoint(corners[1][0]) || this->isOnPoint(corners[1][1])) {
-        return true;
-    }
-    return false;
-}
-bool square::collide(rectangle& rect) { //Works (?)
-    if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
-        return true;
-    }
-    return false;
-}
-bool square::collide(circle& cir) { //Works
-    mtn::Vector2 circleDist(abs(cir.position.x - this->position.x), abs(cir.position.y - this->position.y));
-
-    if (circleDist.x > (this->length / 2 + cir.radius)) { return false;}
-    if (circleDist.y > (this->length / 2 + cir.radius)) { return false;}
-
-    if (circleDist.x <= (this->length / 2)) { return true;}
-    if (circleDist.y <= (this->length / 2)) { return true;}
-
-    float cornerDistanceSq = pow((float)(circleDist.x - this->length / 2), 2) + pow((float)(circleDist.y - this->length / 2), 2);
-
-    return (cornerDistanceSq <= pow(cir.radius, 2));
 }
 
 /*###############################################################################*/
@@ -166,6 +171,14 @@ rectangle::rectangle() : object() {
 
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "rectangle";
+    
     objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -179,6 +192,14 @@ rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "rectangle";
+
     objects.push_back(this);
 }
 rectangle::rectangle(float h, float w, object& obj) : object(obj) {
@@ -192,6 +213,14 @@ rectangle::rectangle(float h, float w, object& obj) : object(obj) {
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "rectangle";
+
     objects.push_back(this);
 }
 rectangle::rectangle(const rectangle& v) : object(v) {
@@ -205,6 +234,14 @@ rectangle::rectangle(const rectangle& v) : object(v) {
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "rectangle";
+
     objects.push_back(this);
 }
 rectangle::~rectangle() {}
@@ -214,32 +251,6 @@ rectangle& rectangle::operator = (const rectangle& v) {
     width = v.width;
     
     return * this;
-}
-
-bool rectangle::collide(rectangle& rect) { //Works
-    if (this->isOnPoint(rect.corners[0][0]) || this->isOnPoint(rect.corners[0][1]) || this->isOnPoint(rect.corners[1][0]) || this->isOnPoint(rect.corners[1][1])) {
-        return true;
-    }
-    return false;
-}
-bool rectangle::collide(square& sqr) { //Works (?)
-    if (this->isOnPoint(sqr.corners[0][0]) || this->isOnPoint(sqr.corners[0][1]) || this->isOnPoint(sqr.corners[1][0]) || this->isOnPoint(sqr.corners[1][1])) {
-        return true;
-    }
-    return false;
-}
-bool rectangle::collide(circle& cir) { //Works
-    mtn::Vector2 circleDist(abs(cir.position.x - this->position.x), abs(cir.position.y - this->position.y));
-
-    if (circleDist.x > (this->width / 2 + cir.radius)) { return false;}
-    if (circleDist.y > (this->height / 2 + cir.radius)) { return false;}
-
-    if (circleDist.x <= (this->width / 2)) { return true;}
-    if (circleDist.y <= (this->height / 2)) { return true;}
-
-    float cornerDistanceSq = pow((float)(circleDist.x - this->width / 2), 2) + pow((float)(circleDist.y - this->height / 2), 2);
-
-    return (cornerDistanceSq <= pow(cir.radius, 2));
 }
 
 /*###############################################################################*/
@@ -254,6 +265,14 @@ circle::circle() : object() {
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "circle";
+
     objects.push_back(this);
 }
 circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
@@ -266,6 +285,14 @@ circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mt
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "circle";
+
     objects.push_back(this);
 }
 circle::circle(float r, object& obj) : object(obj) {
@@ -278,6 +305,14 @@ circle::circle(float r, object& obj) : object(obj) {
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "circle";
+
     objects.push_back(this);
 }
 circle::circle(const circle& v) : object(v) {
@@ -290,6 +325,14 @@ circle::circle(const circle& v) : object(v) {
     
     max = corners[0][1];
     min = corners[1][0];
+
+    vertex[0] = mtn::line(corners[0][0], corners[0][1]);
+    vertex[1] = mtn::line(corners[0][0], corners[1][0]);
+    vertex[2] = mtn::line(corners[0][1], corners[1][1]);
+    vertex[3] = mtn::line(corners[1][0], corners[1][1]);
+    
+    type = "circle";
+
     objects.push_back(this);
 }
 circle::~circle() {}
@@ -300,35 +343,128 @@ circle& circle::operator = (const circle& v) {
     return * this;
 }
 
-bool circle::collide(circle& circ) { // Works
-    //return ((xa-xc)*(xa-xc) + (ya-yc)*(ya-yc)) < r*r;
-    return ((this->position.x - circ.position.x)*(this->position.x - circ.position.x) + (this->position.y - circ.position.y)*(this->position.y - circ.position.y)) < (this->radius + circ.radius)*(this->radius + circ.radius);
-}
-bool circle::collide(square& sqr) { //Works
-    mtn::Vector2 circleDist(abs(sqr.position.x - this->position.x), abs(sqr.position.y - this->position.y));
+/*###############################################################################*/
 
-    if (circleDist.x > (sqr.length / 2 + this->radius)) { return false;}
-    if (circleDist.y > (sqr.length / 2 + this->radius)) { return false;}
+
+bool collide(square& sqr, square& sqr2) {
+    if (sqr.isOnPoint(sqr2.corners[0][0]) || sqr.isOnPoint(sqr2.corners[0][1]) || sqr.isOnPoint(sqr2.corners[1][0]) || sqr.isOnPoint(sqr2.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool collide(square& sqr, rectangle& rect) { //Works (?)
+    if (sqr.isOnPoint(rect.corners[0][0]) || sqr.isOnPoint(rect.corners[0][1]) || sqr.isOnPoint(rect.corners[1][0]) || sqr.isOnPoint(rect.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool collide(square& sqr, circle& cir) { //Works
+    mtn::Vector2 circleDist(abs(cir.position.x - sqr.position.x), abs(cir.position.y - sqr.position.y));
+
+    if (circleDist.x > (sqr.length / 2 + cir.radius)) { return false;}
+    if (circleDist.y > (sqr.length / 2 + cir.radius)) { return false;}
 
     if (circleDist.x <= (sqr.length / 2)) { return true;}
     if (circleDist.y <= (sqr.length / 2)) { return true;}
 
     float cornerDistanceSq = pow((float)(circleDist.x - sqr.length / 2), 2) + pow((float)(circleDist.y - sqr.length / 2), 2);
 
-    return (cornerDistanceSq <= pow(this->radius, 2));
+    return (cornerDistanceSq <= pow(cir.radius, 2));
 }
-bool circle::collide(rectangle& rect) { //Works
-    mtn::Vector2 circleDist(abs(rect.position.x - this->position.x), abs(rect.position.y - this->position.y));
 
-    if (circleDist.x > (rect.width / 2 + this->radius)) { return false;}
-    if (circleDist.y > (rect.height / 2 + this->radius)) { return false;}
+bool collide(rectangle& rect, rectangle& rect2) { //Works
+    if (rect2.isOnPoint(rect.corners[0][0]) || rect2.isOnPoint(rect.corners[0][1]) || rect2.isOnPoint(rect.corners[1][0]) || rect2.isOnPoint(rect.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool collide(rectangle& rect, square& sqr) { //Works (?)
+    if (rect.isOnPoint(sqr.corners[0][0]) || rect.isOnPoint(sqr.corners[0][1]) || rect.isOnPoint(sqr.corners[1][0]) || rect.isOnPoint(sqr.corners[1][1])) {
+        return true;
+    }
+    return false;
+}
+bool collide(rectangle& rect, circle& cir) { //Works
+    mtn::Vector2 circleDist(abs(cir.position.x - rect.position.x), abs(cir.position.y - rect.position.y));
+
+    if (circleDist.x > (rect.width / 2 + cir.radius)) { return false;}
+    if (circleDist.y > (rect.height / 2 + cir.radius)) { return false;}
 
     if (circleDist.x <= (rect.width / 2)) { return true;}
     if (circleDist.y <= (rect.height / 2)) { return true;}
 
     float cornerDistanceSq = pow((float)(circleDist.x - rect.width / 2), 2) + pow((float)(circleDist.y - rect.height / 2), 2);
 
-    return (cornerDistanceSq <= pow(this->radius, 2));
+    return (cornerDistanceSq <= pow(cir.radius, 2));
+}
+
+
+bool collide(circle& circ, circle& circ2) { // Works
+    //return ((xa-xc)*(xa-xc) + (ya-yc)*(ya-yc)) < r*r;
+    return ((circ2.position.x - circ.position.x)*(circ2.position.x - circ.position.x) + (circ2.position.y - circ.position.y)*(circ2.position.y - circ.position.y)) < (circ2.radius + circ.radius)*(circ2.radius + circ.radius);
+}
+bool collide(circle& circ, square& sqr) { //Works
+    mtn::Vector2 circleDist(abs(sqr.position.x - circ.position.x), abs(sqr.position.y - circ.position.y));
+
+    if (circleDist.x > (sqr.length / 2 + circ.radius)) { return false;}
+    if (circleDist.y > (sqr.length / 2 + circ.radius)) { return false;}
+
+    if (circleDist.x <= (sqr.length / 2)) { return true;}
+    if (circleDist.y <= (sqr.length / 2)) { return true;}
+
+    float cornerDistanceSq = pow((float)(circleDist.x - sqr.length / 2), 2) + pow((float)(circleDist.y - sqr.length / 2), 2);
+
+    return (cornerDistanceSq <= pow(circ.radius, 2));
+}
+bool collide(circle& circ, rectangle& rect) { //Works
+    mtn::Vector2 circleDist(abs(rect.position.x - circ.position.x), abs(rect.position.y - circ.position.y));
+
+    if (circleDist.x > (rect.width / 2 + circ.radius)) { return false;}
+    if (circleDist.y > (rect.height / 2 + circ.radius)) { return false;}
+
+    if (circleDist.x <= (rect.width / 2)) { return true;}
+    if (circleDist.y <= (rect.height / 2)) { return true;}
+
+    float cornerDistanceSq = pow((float)(circleDist.x - rect.width / 2), 2) + pow((float)(circleDist.y - rect.height / 2), 2);
+
+    return (cornerDistanceSq <= pow(circ.radius, 2));
+}
+
+bool doesCollide(object& obj1, object& obj2) { //Broken
+    if (obj1.type == "square") {
+        if (obj2.type == "square") {
+            return collide((square&)obj1, (square&)obj2);
+        }
+        else if (obj2.type == "rectangle") {
+            return collide((square&)obj1, (rectangle&)obj2);
+        }
+        else if (obj2.type == "circle") {
+            return collide((square&)obj1, (circle&)obj2);
+        }
+    }
+    else if (obj1.type == "rectangle") {
+        if (obj2.type == "square") {
+            return collide((rectangle&)obj1, (square&)obj2);
+        }
+        else if (obj2.type == "rectangle") {
+            return collide((rectangle&)obj1, (rectangle&)obj2);
+        }
+        else if (obj2.type == "circle") {
+            return collide((rectangle&)obj1, (circle&)obj2);
+        }
+    }
+    else if (obj1.type == "circle") {
+        if (obj2.type == "square") {
+            return collide((circle&)obj1, (square&)obj2);
+        }
+        else if (obj2.type == "rectangle") {
+            return collide((circle&)obj1, (rectangle&)obj2);
+        }
+        else if (obj2.type == "circle") {
+            return collide((circle&)obj1, (circle&)obj2);
+        }
+    }
+    return false;
 }
 
 /*###############################################################################*/
@@ -350,26 +486,32 @@ mtn::Vector2 findClosestObject(mtn::Vector2& v) {
     return closest;
 }
 
-bool checkCollisions(object& obj);
-
-void update() {
-    for (int i = 0; i < objects.size(); i++) {
-        std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
-    }
-    for (int i = 0; i < objects.size(); i++) {
-        if (checkCollisions(*objects[i])) {
-            std::cout << "Collision!" << std::endl;
-        }
-        objects[i]->update();
-    }
-}
-
 bool checkCollisions(object& obj) {
     mtn::Vector2 closest = findClosestObject(obj.position);
     for (int i = 0; i < objects.size(); i++) {
-        if (objects[i]->position == closest) {
+        if (objects[i]->position == closest && !(objects[i] == &obj) && doesCollide(obj, *objects[i])) {
             return true;
         }
     }
     return false;
+}
+
+void update() {
+    
+    auto begin1 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < objects.size(); i++) {
+        std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
+    }
+    auto end1 = std::chrono::high_resolution_clock::now();
+    //std::cout << "first section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
+    
+    auto begin2 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < objects.size(); i++) {
+        if (checkCollisions(*objects[i])) {
+            std::cout << "Collision with " << objects[i]->position << " and " << findClosestObject(objects[i]->position) << std::endl;
+        }
+        objects[i]->update();
+    }
+    auto end2 = std::chrono::high_resolution_clock::now();
+    //std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
 }

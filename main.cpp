@@ -5,42 +5,52 @@
 
 
 int main() {
+    /*
+    //side length, position
+    square s1(2, mtn::Vector2(0.0, 0.0));
 
     //side length, position
-    square s1(2, mtn::Vector2(-1.0, 0.0));
-
-    //side length, position
-    rectangle s2(2, 2, mtn::Vector2(1.0, 0.0)); //1, 2
+    rectangle s2(2, 2, mtn::Vector2(3.0, 0.0)); //1, 2
 
     //rad, position
-    circle s3(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s5(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s6(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s7(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s8(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s9(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s10(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s4(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s11(1, mtn::Vector2(3.0, 0.0)); //1, 2
-    circle s12(1, mtn::Vector2(3.0, 0.0)); //1, 2
+    circle s3(1, mtn::Vector2(7.0, 0.0)); //1, 2
+    circle s4(1, mtn::Vector2(10.0, 0.0)); //1, 2
+    circle s5(1, mtn::Vector2(13.0, 0.0)); //1, 2
+    circle s6(1, mtn::Vector2(15.0, 0.0)); //1, 2
+    circle s7(1, mtn::Vector2(18.0, 0.0)); //1, 2
+    circle s8(1, mtn::Vector2(21.0, 0.0)); //1, 2
+    circle s9(1, mtn::Vector2(24.0, 0.0)); //1, 2
+    circle s10(1, mtn::Vector2(27.0, 0.0)); //1, 2
+    circle s11(1, mtn::Vector2(30.0, 0.0)); //1, 2
+    circle s12(1, mtn::Vector2(33.0, 0.0)); //1, 2
+    circle s33(1, mtn::Vector2(36.0, 0.0)); //1, 2
+    circle s14(1, mtn::Vector2(39.0, 0.0)); //1, 2
+    circle s26(1, mtn::Vector2(42.0, 0.0)); //1, 2
+    circle s16(1, mtn::Vector2(45.0, 0.0)); //1, 2
+    circle s17(1, mtn::Vector2(48.0, 0.0)); //1, 2
+    circle s18(1, mtn::Vector2(51.0, 0.0)); //1, 2
+    circle s20(1, mtn::Vector2(54.0, 0.0)); //1, 2
+    circle s21(1, mtn::Vector2(57.0, 0.0)); //1, 2
+    circle s22(1, mtn::Vector2(60.0, 0.0)); //1, 2
+    circle s23(1, mtn::Vector2(63.0, 0.0)); //1, 2 */
+
+    circle c1(1, mtn::Vector2(-5000.0, 0.0));
+    circle c2(1, mtn::Vector2(2.0, 0.0));
+    square s1(2, mtn::Vector2(4.1, 0.0));
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();
 
     //s3.acceleration = mtn::Vector2(5.0, -3.0);
 
-    auto begin = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 10; i++) {
-        std::cout << "s1: " << s1.position << ", s2: " << s2.position << ", s3: " << s3.position << std::endl;
         update();
     }
-    auto end = std::chrono::high_resolution_clock::now();
-
-
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
-    std::cout << "Time taken: " << elapsed.count() << "ms" << std::endl;
+    
 }
 
 //only switch momentum if same mass
 
 //FIX CORNERS
+
+//momentum = mass * velocitys

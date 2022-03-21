@@ -1,4 +1,5 @@
 #include "mathEngine\Vector2.cpp"
+#include "mathEngine\line.cpp"
 #include <iostream>
 #include <vector>
 #include <math.h>
@@ -18,7 +19,10 @@ class object {
         mtn::Vector2 corners[2][2];
         mtn::Vector2 min = corners[1][0];
         mtn::Vector2 max = corners[0][1];
+        mtn::line vertex[4];
         
+        std::string type;
+
         float mass;
         float theta = RadToDegrees(atan2(position.y, position.x));
 
@@ -35,6 +39,9 @@ class object {
         void applyForce(mtn::Vector2 force);
 
         object& operator = (const object& v);
+        bool operator == (const object& v);
+
+        bool collide(object& obj);
 
         void update();
 
@@ -46,8 +53,6 @@ class object {
 class square : public object {
     public:
         float length;
-
-        //hitbox hb;
         
         square();
         square(float l, mtn::Vector2 pos = mtn::Vector2(), mtn::Vector2 vel = mtn::Vector2(), mtn::Vector2 acc = mtn::Vector2(), mtn::Vector2 frc = mtn::Vector2(), float mass = 1.0);
@@ -56,12 +61,6 @@ class square : public object {
         ~square();
         
         square& operator = (const square& v);
-
-        bool collide(square& sqr);
-        bool collide(rectangle& rect);
-        bool collide(circle& circ);
-
-        //void update();
 };
 
 class rectangle : public object {
@@ -78,11 +77,6 @@ class rectangle : public object {
         ~rectangle();
 
         rectangle& operator = (const rectangle& v);
-
-        bool collide(rectangle& rect);
-        bool collide(circle& circ);
-        bool collide(square& sqr);
-        //void update();
 };
 
 class circle : public object {
@@ -98,11 +92,5 @@ class circle : public object {
         ~circle();
 
         circle& operator = (const circle& v);
-
-        bool collide(circle& circ);
-        bool collide(square& sqr);
-        bool collide(rectangle& rect);
-
-        //void update();
 };
 
