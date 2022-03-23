@@ -4,7 +4,7 @@
 
 std::vector<object*> objects;
 std::vector<hitbox*> hitboxes;
-std::vector<std::vector<mtn::Vector2>> collidingPairs;
+std::vector<mtn::Vector2[2]> collidingPairs;
 
 object::object() {
     position = mtn::Vector2(0.0, 0.0);
@@ -514,7 +514,9 @@ void update() {
 
         if (checkCollisions(*objects[i])) {
             //Start: Collision Logic
+
             std::cout << "Collision with " << objects[i]->position << " and " << findClosestObject(objects[i]->position) << std::endl;
+
             //End: Collision Logic
         }
     }
