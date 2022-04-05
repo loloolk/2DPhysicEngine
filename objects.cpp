@@ -1,10 +1,11 @@
 #include "objects.h"
+#include <vector>
 #include <chrono>
 #include <typeinfo>
 
 std::vector<object*> objects;
 std::vector<hitbox*> hitboxes;
-std::vector<mtn::Vector2[2]> collidingPairs;
+//std::vector<mtn::Vector2[2]> collidingPairs;
 
 object::object() {
     position = mtn::Vector2(0.0, 0.0);
@@ -59,7 +60,6 @@ void object::update() {
     velocity += acceleration;
     position += velocity;
 }
-
 
 bool object::isOnPoint(mtn::Vector2 point) {
     if (point.x >= this->min.x && point.x <= this->max.x && point.y >= this->min.y && point.y <= this->max.y) {
@@ -504,7 +504,7 @@ void update() {
         std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
     }
     auto end1 = std::chrono::high_resolution_clock::now();
-    std::cout << "first section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
+    std::cout << "first section: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
     //End: Print out all object's locations
     
     //Start: Check for collisions
@@ -521,6 +521,6 @@ void update() {
         }
     }
     auto end2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
+    std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
     //End: Check for collisions
 }

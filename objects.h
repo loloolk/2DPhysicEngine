@@ -1,7 +1,6 @@
 #include "mathEngine\Vector2.cpp"
 #include "mathEngine\line.cpp"
 #include <iostream>
-#include <vector>
 #include <math.h>
 
 class object;
