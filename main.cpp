@@ -35,8 +35,8 @@ int main() {
     circle s23(1, mtn::Vector2(63.0, 0.0)); //1, 2 */
 
     circle c1(1, mtn::Vector2(-5000.0, 0.0));
-    circle c2(1, mtn::Vector2(2.0, 0.0));
-    square s1(2, mtn::Vector2(4.1, 0.0));
+    circle c2(1, mtn::Vector2(0.0, 0.0));
+    square s1(2, mtn::Vector2(0.1, 0.0));
 
     //s1.velocity = mtn::Vector2();
     //s2.velocity = mtn::Vector2();

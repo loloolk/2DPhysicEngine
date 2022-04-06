@@ -1,10 +1,11 @@
 #include "objects.h"
 #include <vector>
+#include <array>
 #include <chrono>
 #include <typeinfo>
 
 std::vector<object*> objects;
-std::vector<hitbox*> hitboxes;
+std::vector<std::array<object*, 2>> colliding;
 //std::vector<mtn::Vector2[2]> collidingPairs;
 
 object::object() {
@@ -486,14 +487,13 @@ mtn::Vector2 findClosestObject(mtn::Vector2& v) {
     return closest;
 }
 
-bool checkCollisions(object& obj) {
+void checkCollisions(object& obj) {
     mtn::Vector2 closest = findClosestObject(obj.position);
     for (int i = 0; i < objects.size(); i++) {
         if (objects[i]->position == closest && !(objects[i] == &obj) && doesCollide(obj, *objects[i])) {
-            return true;
+            colliding.push_back({&obj, objects[i]});
         }
     }
-    return false;
 }
 
 void update() {
@@ -504,7 +504,7 @@ void update() {
         std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
     }
     auto end1 = std::chrono::high_resolution_clock::now();
-    std::cout << "first section: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
+    //std::cout << "first section: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
     //End: Print out all object's locations
     
     //Start: Check for collisions
@@ -512,15 +512,14 @@ void update() {
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->update();
 
-        if (checkCollisions(*objects[i])) {
-            //Start: Collision Logic
-
-            std::cout << "Collision with " << objects[i]->position << " and " << findClosestObject(objects[i]->position) << std::endl;
-
-            //End: Collision Logic
-        }
+        checkCollisions(*objects[i]);
     }
     auto end2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
+    //std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
     //End: Check for collisions
+    for (int i = 0; i < colliding.size(); i++) {
+        std::cout << "Collision with " << colliding[i][0]->position << " and " << colliding[i][1]->position << std::endl; 
+    }
+
+    colliding.clear();
 }
