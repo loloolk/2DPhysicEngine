@@ -46,11 +46,6 @@ int main() {
     for (int i = 0; i < 10; i++) {
         update();
     }
-    
 }
-
-//only switch momentum if same mass
-
-//FIX CORNERS
 
 //momentum = mass * velocitys

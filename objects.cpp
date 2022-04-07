@@ -494,6 +494,7 @@ void checkCollisions(object& obj) {
             colliding.push_back({&obj, objects[i]});
         }
     }
+    
 }
 
 void update() {
@@ -515,8 +516,10 @@ void update() {
         checkCollisions(*objects[i]);
     }
     auto end2 = std::chrono::high_resolution_clock::now();
+
     //std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
     //End: Check for collisions
+
     for (int i = 0; i < colliding.size(); i++) {
         std::cout << "Collision with " << colliding[i][0]->position << " and " << colliding[i][1]->position << std::endl; 
     }
