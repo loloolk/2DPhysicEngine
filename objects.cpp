@@ -498,31 +498,24 @@ void checkCollisions(object& obj) {
 }
 
 void update() {
-    
     //Start: Print out all object's locations
-    auto begin1 = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < objects.size(); i++) {
+    /*for (int i = 0; i < objects.size(); i++) {
         std::cout << "Object " << i + 1 << ": " << objects[i]->position << std::endl;
     }
-    auto end1 = std::chrono::high_resolution_clock::now();
-    //std::cout << "first section: " << std::chrono::duration_cast<std::chrono::microseconds>(end1 - begin1).count() << " milliseconds" << std::endl;
-    //End: Print out all object's locations
-    
+    */
+
     //Start: Check for collisions
-    auto begin2 = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->update();
 
         checkCollisions(*objects[i]);
     }
-    auto end2 = std::chrono::high_resolution_clock::now();
-
-    //std::cout << "Second section: " << std::chrono::duration_cast<std::chrono::microseconds>(end2 - begin2).count() << " milliseconds" << std::endl;
+    
     //End: Check for collisions
-
-    for (int i = 0; i < colliding.size(); i++) {
+    /*for (int i = 0; i < colliding.size(); i++) {
         std::cout << "Collision with " << colliding[i][0]->position << " and " << colliding[i][1]->position << std::endl; 
     }
+    */
 
     colliding.clear();
 }
