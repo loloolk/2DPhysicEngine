@@ -12,25 +12,25 @@ object::object() {
     position = mtn::Vector2(0.0, 0.0);
     velocity = mtn::Vector2(0.0, 0.0);
     acceleration = mtn::Vector2(0.0, 0.0);
-    //force = mtn::Vector2(0.0, 0.0);
-    
+
     mass = 1.0;
+    momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
-object::object(mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) {
+object::object(mtn::Vector2 pos, mtn::Vector2 vel = mtn::Vector2(0.0, 0.0), mtn::Vector2 acc = mtn::Vector2(0.0, 0.0), float m = 1.0) {
     position = pos;
     velocity = vel;
     acceleration = acc;
-    //force = frc;
-    
+
     mass = m;
+    momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
 object::object(const object& obj) {
     position = obj.position;
     velocity = obj.velocity;
     acceleration = obj.acceleration;
-    //force = obj.force;
     
     mass = obj.mass;
+    momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
 object::~object() {}
 
@@ -91,7 +91,7 @@ square::square() : object() {
 
     objects.push_back(this);
 }
-square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
+square::square(float l, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, m) {
     length = l;
 
     corners[0][0] = mtn::Vector2(this->position.x - length / 2, this->position.y + length / 2);
@@ -182,7 +182,7 @@ rectangle::rectangle() : object() {
     
     objects.push_back(this);
 }
-rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
+rectangle::rectangle(float h, float w, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, m) {
     height = h;
     width = w;
     
@@ -276,7 +276,7 @@ circle::circle() : object() {
 
     objects.push_back(this);
 }
-circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, frc, m) {
+circle::circle(float r, mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, mtn::Vector2 frc, float m) : object(pos, vel, acc, m) {
     radius = r;
     
     corners[0][0] = mtn::Vector2(this->position.x + radius * cos(135), this->position.y + radius * sin(135));
@@ -497,6 +497,10 @@ void checkCollisions(object& obj) {
     
 }
 
+void collisionLogic(object& obj1, object& obj2) {
+    
+}
+
 void update() {
     //Start: Print out all object's locations
     /*for (int i = 0; i < objects.size(); i++) {
@@ -512,10 +516,10 @@ void update() {
     }
     
     //End: Check for collisions
-    /*for (int i = 0; i < colliding.size(); i++) {
-        std::cout << "Collision with " << colliding[i][0]->position << " and " << colliding[i][1]->position << std::endl; 
+    for (int i = 0; i < colliding.size(); i++) {
+        //std::cout << "Collision with " << colliding[i][0]->position << " and " << colliding[i][1]->position << std::endl; 
     }
-    */
+    
 
     colliding.clear();
 }

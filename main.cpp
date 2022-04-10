@@ -13,8 +13,10 @@ int main() {
     //s2.velocity = mtn::Vector2();
 
     //s3.acceleration = mtn::Vector2(5.0, -3.0);
+    std::cout << mtn::Vector2(c1.mass * c1.velocity.x, c1.mass * c1.velocity.y) << std::endl;
+    std::cout << c1.momentum << std::endl;
 
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 10; i++) {
         update();
     }
     auto end1 = std::chrono::high_resolution_clock::now();

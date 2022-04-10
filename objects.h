@@ -18,7 +18,10 @@ class object {
         mtn::Vector2 corners[2][2];
         mtn::Vector2 min = corners[1][0];
         mtn::Vector2 max = corners[0][1];
+
         mtn::line vertex[4];
+
+        mtn::Vector2 momentum;
         
         std::string type;
 
@@ -26,7 +29,7 @@ class object {
         float theta = RadToDegrees(atan2(position.y, position.x));
 
         object();
-        object(mtn::Vector2 pos, mtn::Vector2 vel = mtn::Vector2(), mtn::Vector2 acc = mtn::Vector2(), mtn::Vector2 frc = mtn::Vector2(), float mass = 1.0);
+        object(mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, float mass);
         object(const object& obj);
         ~object();
 
