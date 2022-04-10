@@ -477,7 +477,7 @@ bool doesCollide(object& obj1, object& obj2) { //Broken
 /*###############################################################################*/
 
 //line detecting where they go for skipover problem
-//possibly take in length from shape to fix collisions
+//finalVel.x = (obj1.momentum.x + obj2.momentum.x) / obj1.mass + obj2.mass
 
 mtn::Vector2 findClosestObject(mtn::Vector2& v) {
     mtn::Vector2 closest;
