@@ -26,7 +26,7 @@ class object {
         std::string type;
 
         float mass;
-        float theta = RadToDegrees(atan2(position.y, position.x));
+        float theta;
 
         object();
         object(mtn::Vector2 pos, mtn::Vector2 vel, mtn::Vector2 acc, float mass);

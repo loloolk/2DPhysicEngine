@@ -14,6 +14,7 @@ object::object() {
     acceleration = mtn::Vector2(0.0, 0.0);
 
     mass = 1.0;
+    theta = RadToDegrees(atan2(position.y, position.x));
     momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
 object::object(mtn::Vector2 pos, mtn::Vector2 vel = mtn::Vector2(0.0, 0.0), mtn::Vector2 acc = mtn::Vector2(0.0, 0.0), float m = 1.0) {
@@ -22,6 +23,7 @@ object::object(mtn::Vector2 pos, mtn::Vector2 vel = mtn::Vector2(0.0, 0.0), mtn:
     acceleration = acc;
 
     mass = m;
+    theta = RadToDegrees(atan2(position.y, position.x));
     momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
 object::object(const object& obj) {
@@ -30,6 +32,7 @@ object::object(const object& obj) {
     acceleration = obj.acceleration;
     
     mass = obj.mass;
+    theta = RadToDegrees(atan2(position.y, position.x));
     momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
 }
 object::~object() {}
@@ -60,6 +63,9 @@ bool object::operator == (const object& obj) {
 void object::update() {
     velocity += acceleration;
     position += velocity;
+
+    momentum = mtn::Vector2(mass * velocity.x, mass * velocity.y);
+    theta = RadToDegrees(atan2(position.y, position.x));
 }
 
 bool object::isOnPoint(mtn::Vector2 point) {
