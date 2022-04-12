@@ -1,7 +1,7 @@
 #include <string>
 #include <chrono>
 #include "time.h"
-#include "objects.cpp"
+#include "logic.cpp"
 
 int main() {
     auto begin1 = std::chrono::high_resolution_clock::now();
