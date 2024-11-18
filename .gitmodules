@@ -1,2 +1,3 @@
 [submodule "MathEngine"]
-	url = https://github.com/loloolk/MathEngine
+	url = https://github.com/loloolk/MathEngine.git
+	path = MathEngine
