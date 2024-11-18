@@ -1,5 +1,5 @@
-#include "mathEngine\Vector2.cpp"
-#include "mathEngine\line.cpp"
+#include "MathEngine\Vector2.cpp"
+#include "MathEngine\line.cpp"
 #include <iostream>
 #include <math.h>
 
